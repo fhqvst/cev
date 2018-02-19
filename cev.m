@@ -79,6 +79,8 @@ end
 % Plot strike price
 disp("K = " + num2str(K));
 line([K K], [0 (K + 0.1)], 'Color', 'k', 'LineStyle', ':');
+line([(3/5 * K) (3/5 * K)], [0 (K + 0.1)], 'Color', 'k', 'LineStyle', ':');
+line([(7/5 * K) (7/5 * K)], [0 (K + 0.1)], 'Color', 'k', 'LineStyle', ':');
 
 % Plot Black-Scholes
 bsc = zeros(m + 1);
