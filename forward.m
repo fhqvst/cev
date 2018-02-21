@@ -22,12 +22,15 @@ for j = 2 : m + 1
     space(j) = space(j - 1) + dx;
 end
 
-for j = 2 : m + 1
+% Value for initial time
+for j = 1 : m + 1
     u(1, j) = max(0, g(space(j)));
 end
 
+% Value for initial space and terminal space
 for i = 1 : n + 1
     u(i, m + 1) = max(0, g(space(m + 1)));
+    u(i, 1)     = max(0, g(space(1)));
 end
 
 for i = 1 : n
