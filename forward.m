@@ -6,7 +6,7 @@ dt = T/n;
 dx = X/m;
 d  = dt/dx^2;
 
-if d < 0.5
+if d > 0.15
     disp("Warning: d =" + num2str(d));
 end
 
@@ -29,8 +29,8 @@ end
 
 % Value for initial space and terminal space
 for i = 1 : n + 1
-    u(i, m + 1) = max(0, g(space(m + 1)));
-    u(i, 1)     = max(0, g(space(1)));
+    u(i, 1)     = max(0, g(space(1) / exp(-r * time(i)) * exp(-r * time(i))));
+    u(i, m + 1) = max(0, g(space(m + 1) / exp(-r * time(i)) * exp(-r * time(i))));
 end
 
 for i = 1 : n
