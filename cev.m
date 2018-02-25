@@ -3,13 +3,13 @@ clear;
 % figure;
 hold on;
 
-plotStyleCall = {'-.b','.b','--b', 'vb', '~b'};
-plotStylePut  = {'-.r','.r','--r', 'vr', '~r'};
+plotStyleCall = {'--b','-b','-.b', 'vb', '~b'};
+plotStylePut  = {'--r','-r','-.r', 'vr', '~r'};
 
 T   = 1;
 X   = 200;
-n   = 15000;
-m   = 100;
+n   = 2000;
+m   = 400;
 K   = 30;
 g   = @(x) x - K;
 r   = 0.01;
@@ -81,17 +81,12 @@ line([(3/5 * K) (3/5 * K)], [0 (K + 0.1)], 'Color', 'k', 'LineStyle', ':');
 line([(7/5 * K) (7/5 * K)], [0 (K + 0.1)], 'Color', 'k', 'LineStyle', ':');
 
 % Plot Black-Scholes
-bsc = zeros(1, m + 1);
-bsp = zeros(1, m + 1);
-for j = 1 : m + 1
-    [call, put] = blsprice(space(j), K, r, T, sig);
-    bsc(j) = call;
-    bsp(j) = put; 
-end
+[bsc, bsp] = blsprice(space, K, r, T, sig);
 
-plot(x, bsc, '-k');
-plot(x, bsp, '-k');
+plot(x, bsc, '.k');
+plot(x, bsp, '.k');
 
+% Set axis
 axis([0 (2 * K) 0 K]);
 hold off;
 
@@ -118,7 +113,7 @@ for j = 1 : m + 1
     parity = parity + abs(c_y(j) - p_y(j) - c_space(j) + K * exp(-r * T));
 end
 
-disp(['Parity error = ', num2str(parity / (m + 1))]);
+disp(['Avg. Parity error = ', num2str(parity / (m + 1))]);
 
 disp(' ');
 disp('Done!')

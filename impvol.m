@@ -2,36 +2,40 @@ clc;
 clear;
 hold on;
 
-steps = 300;
-x = zeros(1, steps); 
-y_cev = zeros(1, steps);
-y_bls = zeros(1, steps);
+K_max = 40;
+x = zeros(1, K_max); 
 
-sig = .25;                  % Stock volatility
+y_cev_c = zeros(1, K_max);
+y_cev_p = zeros(1, K_max);
+y_bls = zeros(1, K_max);
 
-for i = 1 : steps
+for i = 1 : K_max
     % Calculate initial call option price with strike K
+    K   = i;
     X   = 200;
-    n   = 1400;
-    m   = 140;
-    K   = (i * X / steps);          % Strike price;
-    T   = 1.0;                      % Years until expiry
+    n   = 1000;
+    m   = 600;
+    T   = 1;                        % Years until expiry
     g   = @(x) max(0, x - K);       % Option function
     r   = 0.01;                     % Interest rate
     del = 1;                        % CEV Delta
+    sig = .25;                      % Volatility
 
-    [u, time, space] = cn(T, X, n, m, g, r, del, sig);
-    s = space(round(m / 10));
+    [u_c, time_c, space_c] = cn(T, X, n, m, g, r, del, sig);
+
+    si = round(m / 10);
+    s0 = space_c(si);
     
-    cev_price = exp(-r * T) * u(n + 1, round(m / 10));
-    bls_price = blsprice(s, K, r, T, sig);
+    cev_price_c = exp(-r * T) * u_c(n + 1, si);
+    bls_price = blsprice(s0, K, r, T, sig);
 
     x(i) = K;
-    y_cev(i) = blsimpv(s, K, r, T, cev_price);
-    y_bls(i) = blsimpv(s, K, r, T, bls_price);
+
+    y_cev_c(i) = blsimpv(s0, K, r, T, cev_price_c, 1, 0, [], true);
+    y_bls(i) = blsimpv(s0, K, r, T, bls_price);
 end
 
-plot(x, y_cev, 'b');
+plot(x, y_cev_c, 'b');
 plot(x, y_bls, 'k');
 
-axis([5 (2 * s) 0 0.5]);
+axis auto;
