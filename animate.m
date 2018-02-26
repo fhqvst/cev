@@ -1,25 +1,26 @@
+% Animation how the numerical method for CEV approximates Black-Scholes.
 clc;
 figure
 
 T   = 1;
-X   = 1;
+X   = 2;
 n   = 1000;
-m   = 30;
+m   = 100;
 K   = 0.5;
 g   = @(x) x - K;
 r   = 0.01;
-del = 0.5;
+del = 1;
 sig = 0.25;
 
 disp('Running...');
 disp('');
 
 v = 0.1;
-step = round(1 + n * v / 10);
+step = round(1 + n * v / 4);
 
 for i = 1 : step : n + 1
 
-    [u, time, space] = forward(T, X, n, m, g, r, del, sig);
+    [u, time, space] = cn(T, X, n, m, g, r, del, sig);
 
     S = 1 : m + 1;
     x = zeros(m + 1);
@@ -40,7 +41,7 @@ for i = 1 : step : n + 1
     plot(x, y, ':k');
     hold off;
     
-    axis([0 1 0 .6]);
+    axis auto;
     drawnow;
 
 end

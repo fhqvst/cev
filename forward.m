@@ -1,6 +1,7 @@
 function [u, time, space] = forward(T, X, n, m, g, r, del, sig)
-%FORWARD Summary of this function goes here
-%   Detailed explanation goes here
+%FORWARD Forward in time, centered in space.
+%   Forward euler method in the time derivative, centered in the space
+%   derivative.
 
 dt = T/n;
 dx = X/m;

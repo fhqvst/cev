@@ -1,6 +1,5 @@
 function [u, time, space] = cn(T, X, n, m, g, r, del, sig)
-%BACKWARD Summary of this function goes here
-%   Detailed explanation goes here
+%CN Crank-Nicolson for the CEV model.
 
 dt = T/n;
 dx = X/m;
@@ -33,42 +32,38 @@ for i = 1 : n + 1
     u(i, m + 1) = max(0, g(space(m + 1) / exp(-r * time(i)) * exp(-r * time(i))));
 end
 
+% Fix A values for given boundaries
+A(1, 1) = 1; 
+A(m + 1, m + 1) = 1;
+
 % Values for A
-for k = 1 : m + 1
+for k = 2 : m
     xj = space(k);
     
     a = r * xj * d1 / 4 - (sig^(2) * xj^(2 * del) * d2 / 4);
     b = 1 + (sig^(2) * xj^(2 * del) * d2 / 2);
     c = -r * xj * d1 / 4 - (sig^(2) * xj^(2 * del) * d2 / 4);
 
-    if k > 1
-        A(k, k - 1) = a;
-    end
-
+    A(k, k - 1) = a;
     A(k, k) = b;
-    
-    if k < m + 1
-        A(k, k + 1) = c;
-    end
+    A(k, k + 1) = c;
 end
 
+% Fix B values for given boundaries
+B(1, 1) = 1; 
+B(m + 1, m + 1) = 1;
+
 % Values for B
-for k = 1 : m + 1
+for k = 2 : m
     xj = space(k);
 
     a = (sig^(2) * xj^(2 * del) * d2 / 4) - (r * xj * d1 / 4);
     b = 1 - (sig^(2) * xj^(2 * del) * d2 / 2);
     c = (r * xj * d1 / 4) + (sig^(2) * xj^(2 * del) * d2 / 4);
     
-    if k > 1
-        B(k, k - 1) = a;
-    end
-
+    B(k, k - 1) = a;
     B(k, k) = b;
-    
-    if k < m + 1
-        B(k, k + 1) = c;
-    end
+    B(k, k + 1) = c;
 end
 
 A_ = transpose(inv(A));

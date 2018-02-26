@@ -1,3 +1,4 @@
+% Plot Black-Scholes implied volatility, where price is given by the CEV-model.
 clc;
 clear;
 hold on;

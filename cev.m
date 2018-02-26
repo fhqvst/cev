@@ -1,13 +1,14 @@
+% Plot CEV prices and Black-Scholes prices for vanilla options.
+
 clc;
 clear;
-% figure;
 hold on;
 
 plotStyleCall = {'--b','-b','-.b', 'vb', '~b'};
 plotStylePut  = {'--r','-r','-.r', 'vr', '~r'};
 
 T   = 1;
-X   = 200;
+X   = 60;
 n   = 2000;
 m   = 400;
 K   = 30;
@@ -88,6 +89,7 @@ plot(x, bsp, '.k');
 
 % Set axis
 axis([0 (2 * K) 0 K]);
+% axis auto
 hold off;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,7 +100,7 @@ del = 0.5;
 [c_u, c_time, c_space] = cn(T, X, n, m, g, r, del, sig);
 [p_u, p_time, p_space] = cn(T, X, n, m, @(x) -g(x), r, del, sig);
 
-c_x = zeros(1, m + 1); p_x = zeros(1, m + 1); 
+c_x = zeros(1, m + 1); p_x = zeros(1, m + 1);
 c_y = zeros(1, m + 1); p_y = zeros(1, m + 1);
 
 parity = 0;
